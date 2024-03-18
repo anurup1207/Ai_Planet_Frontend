@@ -6,9 +6,15 @@
 .message-display{
     height: 70vh;
     width: 100%;
+    padding-top:3rem ;
+    overflow-y: auto;
     
     
 }
+.message-display::-webkit-scrollbar {
+    width: 1px;
+    opacity: 30;
+  }
 .input{
     width: 100%;
     /* border: 1px solid black; */
