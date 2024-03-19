@@ -1,6 +1,6 @@
 import './Navbar.css';
 
-import React ,{useRef, useState} from 'react';
+import React ,{useRef, useState ,useEffect} from 'react';
 import axios from "axios"
 
 
@@ -9,33 +9,65 @@ import add from '../assets/add.svg';
 import file from '../assets/file_image.svg'
 
 
-function Navbar() {
+function Navbar(props) {
   const fileInputRef = useRef(null);
   const uploadedFile = useRef(null);
 
+  
+
+  
+  
  
-  const [uploadedFileName,setUploadedFileName] = useState("")
+  const [uploadedFileName,setUploadedFileName] = useState("");
+ 
+
+  useEffect(() => {
+  },[uploadedFileName]);
+
 
   const handleUploadButtonClick = () => {
     fileInputRef.current.click();
   };
   const handleFileChange = async(event) => {
     const selectedFile = event.target.files[0];
-    
-    setUploadedFileName(selectedFile["name"]);
-    uploadedFile.current.style.display = "flex";
+    const name=selectedFile["name"]
+
+    const shortenName = name => name.length > 9 ? name.substring(0, 5) + "...pdf" : name;
+
+    setUploadedFileName(shortenName(name));
     const formData = new FormData();
     formData.append('file', selectedFile);
     console.log(selectedFile)
     console.log(formData)
 
+    props.loadingBar.current.continuousStart();
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/upload', {"file":selectedFile}, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
+      
+      props.loadingBar.current.staticStart();
 
-    const response = await axios.post('http://127.0.0.1:8000/upload', {"file":selectedFile}, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-    console.log('Upload successful:', response.data);
+      
+      if(response.data["message"]==="Success"){
+        props.setIsUploaded(false);
+        uploadedFile.current.style.display = "flex";
+      }else{
+        throw new Error("Something Went Wrong");
+      }
+      
+      
+    } catch (error) {
+     
+      setUploadedFileName("Try Again");
+      
+      uploadedFile.current.style.color="red";
+      uploadedFile.current.style.display = "flex";
+      
+    }
+    props.loadingBar.current.complete();
       
     console.log('Selected file:', formData);
   };
@@ -51,7 +83,7 @@ function Navbar() {
       </div>
       <button className="upload-button" onClick={handleUploadButtonClick}>
         <img src={add} alt="add" />
-        <div>Upload PDF</div>
+        <div className='button-name'>Upload PDF</div>
         <input type="file" className='hide-input' onChange={handleFileChange} accept='.pdf'  ref={fileInputRef}/>
       </button>
       </div>
