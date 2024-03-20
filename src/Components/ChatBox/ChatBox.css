@@ -47,7 +47,19 @@
     justify-content: center;
     align-items: center;
     border-radius: 8px;
+    cursor: pointer;
 
+}
+.text-to-audio{
+    background-color:#E4E8EE ;
+    width: 30px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: #4c4e4f;
+    cursor: pointer;
 }
 .upload-text{
     display: flex;
