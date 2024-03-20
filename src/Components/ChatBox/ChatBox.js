@@ -25,7 +25,7 @@ function ChatBox(props) {
     if(!(props.isUploaded || onGoingChat)){
     setMessage(transcript);
     }
-  },[transcript])
+  },[transcript,props.isUploaded,onGoingChat])
 
   useEffect(() => {
     document.querySelector('.message-display').scrollTop = document.querySelector('.message-display').scrollHeight
@@ -36,7 +36,7 @@ function ChatBox(props) {
     e.preventDefault();
 
     if(message !== ""){
-      if(isAudioText==true){
+      if(isAudioText===true){
         handleAudioToText(e);
       }
       let tempmessage=message;
@@ -44,7 +44,7 @@ function ChatBox(props) {
       // On Going Chat == true
       setOnGoingChat(true);
       setChatMessage([...chatMessage,{text :tempmessage , isDisplay:true},{text:"",isDisplay:false}]);
-      const response = await axios.post('http://127.0.0.1:8000/chat', {"question":tempmessage});
+      const response = await axios.post('https://ai-planet-backend.onrender.com/chat', {"question":tempmessage});
       const answer=response.data;
       console.log(answer[answer.length -1])
       setChatMessage([...chatMessage ,{text:answer[answer.length -2]["content"], isDisplay:true},{text:answer[answer.length -1]["content"],isDisplay:true}]);
@@ -67,7 +67,7 @@ function ChatBox(props) {
   const handleAudioToText=async(e)=>{
     e.preventDefault();
     if(!(props.isUploaded || onGoingChat)){
-      if(isAudioText==false){
+      if(isAudioText===false){
         setAudioText(true)
         audiobutton.current.style.color ="#0FA958";
         startListening();
