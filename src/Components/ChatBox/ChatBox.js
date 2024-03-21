@@ -21,11 +21,15 @@ function ChatBox(props) {
   const {transcript, browserSupportsSpeechRecognition} = useSpeechRecognition();
   const startListening = () => SpeechRecognition.startListening({ continuous: true });
   
+  const isSetMessageTranscript=()=>{
+    return  props.isUploaded || onGoingChat
+  }
+
   useEffect(()=>{
-    if(!(props.isUploaded || onGoingChat)){
+    if(!isSetMessageTranscript()){
     setMessage(transcript);
     }
-  },[transcript,props.isUploaded,onGoingChat])
+  },[transcript])
 
   useEffect(() => {
     document.querySelector('.message-display').scrollTop = document.querySelector('.message-display').scrollHeight
