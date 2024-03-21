@@ -80,7 +80,7 @@ function ChatBox(props) {
       }else{
         setAudioText(false)
         audiobutton.current.style.color ="#4c4e4f";
-        SpeechRecognition.abortListening();
+        SpeechRecognition.stopListening();
         
       }
   }
