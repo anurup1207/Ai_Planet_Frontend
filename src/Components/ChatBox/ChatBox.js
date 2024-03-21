@@ -4,7 +4,7 @@ import send from "../assets/send.svg"
 import chat_avatar from "../assets/chat_avatar.svg"
 import MessageBox from '../MessageBox/MessageBox';
 import axios from 'axios';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import SpeechRecognition, { useSpeechRecognition  } from 'react-speech-recognition';
 import Tooltip from '../Tooltip/Tooltip';
 
 
@@ -16,19 +16,18 @@ function ChatBox(props) {
   const [message,setMessage] = useState("");
   const [chatMessage,setChatMessage] = useState([]);
   const [onGoingChat,setOnGoingChat] = useState(false);
-  
 
-  const {transcript, browserSupportsSpeechRecognition} = useSpeechRecognition();
+  
+  
+  
+  const {transcript, browserSupportsSpeechRecognition ,resetTranscript} = useSpeechRecognition();
   const startListening = () => SpeechRecognition.startListening({ continuous: true });
   
-  const isSetMessageTranscript=()=>{
-    return  props.isUploaded || onGoingChat
-  }
+
+
 
   useEffect(()=>{
-    if(!isSetMessageTranscript()){
     setMessage(transcript);
-    }
   },[transcript])
 
   useEffect(() => {
@@ -40,6 +39,9 @@ function ChatBox(props) {
     e.preventDefault();
 
     if(message !== ""){
+      resetTranscript();
+
+
       if(isAudioText===true){
         handleAudioToText(e);
       }
