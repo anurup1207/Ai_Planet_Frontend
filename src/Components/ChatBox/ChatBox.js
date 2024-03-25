@@ -50,7 +50,7 @@ function ChatBox(props) {
       // On Going Chat == true
       setOnGoingChat(true);
       setChatMessage([...chatMessage,{text :tempmessage , isDisplay:true},{text:"",isDisplay:false}]);
-      const response = await axios.post('https://ai-planet-backend.onrender.com/chat', {"question":tempmessage});
+      const response = await axios.post('http://52.66.87.160/chat', {"question":tempmessage});
       const answer=response.data;
       console.log(answer[answer.length -1])
       setChatMessage([...chatMessage ,{text:answer[answer.length -2]["content"], isDisplay:true},{text:answer[answer.length -1]["content"],isDisplay:true}]);

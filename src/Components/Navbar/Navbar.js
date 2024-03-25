@@ -42,7 +42,7 @@ function Navbar(props) {
 
     props.loadingBar.current.continuousStart();
     try {
-      const response = await axios.post('https://ai-planet-backend.onrender.com/chat/upload', {"file":selectedFile}, {
+      const response = await axios.post('http://52.66.87.160/upload', {"file":selectedFile}, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
